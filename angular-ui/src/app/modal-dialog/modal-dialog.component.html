@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <div *ngFor="let field of data.fields">
+    <mat-form-field *ngIf="!field.optionSupplier && !field.multiSelectSupplier">
+      <input matInput [(ngModel)]="inputData[field.name]" [type]="field.type" placeholder="{{ field.placeholder }}">
+    </mat-form-field>
+    <mat-form-field *ngIf="field.optionSupplier">
+      <mat-select [(ngModel)]="inputData[field.name]">
+        <mat-option *ngFor="let option of field.options" [value]="option.name">{{ option.displayName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="field.multiSelectSupplier">
+      <mat-select [(ngModel)]="inputData[field.name]" multiple>
+        <mat-option *ngFor="let option of field.multiSelectOptions" [value]="option.name">{{ option.displayName }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<button mat-button *ngFor="let button of data.buttons" (click)="renewOptions(button.ref)">{{ button.text }}</button>
+<mat-dialog-actions>
+  <button mat-button (click)="onSubmit()">Submit</button>
+  <button mat-button (click)="onCancel()">Cancel</button>
+</mat-dialog-actions>

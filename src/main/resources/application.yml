@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: IOSU
+
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/iosu
+    username: user
+    password: user
+    driver-class-name: org.postgresql.Driver
+
+
+  liquibase:
+    drop-first: false
+  jpa:
+    show-sql: false

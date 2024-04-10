@@ -1,0 +1,26 @@
+<div class="login-container">
+  <img class="logo" src="assets/logo.png" alt="Logo">
+  <mat-card class="login-form">
+    <mat-card-header style="padding: 10px;">
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div style="display: flex; width: 100%; justify-content: center" *ngIf="wrongPassword">
+          <p style="color: red;">Invalid username or password.</p>
+        </div>
+        <mat-form-field style="width: 100%">
+          <mat-label>Username</mat-label>
+          <input matInput placeholder="Enter your username" autocomplete="off" [(ngModel)]="username">
+        </mat-form-field>
+        <mat-form-field style="width: 100%">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" placeholder="Enter your password" autocomplete="off" [(ngModel)]="password">
+        </mat-form-field>
+        <button mat-raised-button color="primary" style="width: 100%" (click)="onLogin()">Login</button>
+        <div style="display: flex; width: 100%; justify-content: center">
+          <p>Or</p>
+        </div>
+        <button mat-raised-button color="basic" (click)="onLimited()">Continue with limited access...</button>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,281 @@
+<div class="page-container div-with-waves">
+  <div class="tab-container">
+
+    <div class="tab-links">
+      <img class="logo" src="assets/logo.png" alt="PoolCraft Logo">
+      <button mat-flat-button color="basic" *ngIf="authenticated">{{ username }} | Full Access</button>
+      <button mat-flat-button color="basic" *ngIf="!authenticated">{{ username }} | Limited Access</button>
+    </div>
+    <div class="tab-links">
+      <button mat-flat-button class="tab-link" [class.active]="tab === 'projects'"  (click)="openProjectsTab()">Projects</button>
+      <button mat-flat-button class="tab-link" [class.active]="tab === 'clients'"   (click)="openClientsTab()">Clients</button>
+      <button mat-flat-button class="tab-link" [class.active]="tab === 'teams'"     (click)="openTeamsTab()">Teams</button>
+      <button mat-flat-button class="tab-link" [class.active]="tab === 'suppliers'" (click)="openSuppliersTab()">Suppliers</button>
+      <button mat-flat-button class="tab-link" [class.active]="tab === 'materials'" (click)="openMaterialsTab()">Materials</button>
+      <button mat-flat-button class="tab-link" [class.active]="tab === 'techs'"     (click)="openTechsTab()">Techs</button>
+      <button mat-fab color="basic" style="box-shadow: none" (click)="logout()"><mat-icon>logout</mat-icon></button>
+    </div>
+
+    <!-- Projects Tab -->
+    <div id="projects" class="tab-content active" *ngIf="tab === 'projects'">
+      <h2>Projects</h2>
+
+      <table id="projects-table">
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Client</th>
+          <th>Team</th>
+          <th>Price</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th *ngFor="let column of additionalColumns">
+            {{ column }}
+            <button mat-icon-button color="basic" (click)="removeColumn(column)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </th>
+          <th><button mat-icon-button color="basic" (click)="addColumn()" *ngIf="authenticated">
+            <mat-icon>add_box</mat-icon>
+          </button></th>
+        </tr>
+        <tr *ngFor="let project of data">
+          <td>{{ project.id }}</td>
+          <td>{{ project.type }}</td>
+          <td>{{ project.client.name }}</td>
+          <td>{{ project.team.name }}</td>
+          <td>{{ project.price }}</td>
+          <td>{{ project.startDate }}</td>
+          <td>{{ project.date }}</td>
+          <td *ngFor="let value of additionalColumns">{{ project.additionalColumns[value] }}</td>
+          <td>
+            <button mat-icon-button color="basic" (click)="generateReport(project)">
+              <mat-icon>print</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="editProject(project)" *ngIf="authenticated">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="removeEntity(project.id)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end;" *ngIf="authenticated">
+        <button style="margin: 15px;" (click)="addProject()" mat-fab color="basic"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <div id="clients" class="tab-content active" *ngIf="tab === 'clients'">
+      <h2>Clients</h2>
+      <table id="clients-table">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th *ngFor="let column of additionalColumns">
+            {{ column }}
+            <button mat-icon-button color="basic" (click)="removeColumn(column)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </th>
+          <th><button mat-icon-button color="basic" (click)="addColumn()" *ngIf="authenticated">
+            <mat-icon>add_box</mat-icon>
+          </button></th>
+        </tr>
+        <tr *ngFor="let client of data">
+          <td>{{ client.id }}</td>
+          <td>{{ client.name }}</td>
+          <td>{{ client.phone }}</td>
+          <td>{{ client.email }}</td>
+          <td *ngFor="let value of additionalColumns">{{ client.additionalColumns[value] }}</td>
+          <td>
+            <button mat-icon-button color="basic" (click)="send(client)">
+              <mat-icon>mail</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="editClient(client)" *ngIf="authenticated">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="removeEntity(client.id)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end;" *ngIf="authenticated">
+        <button style="margin: 15px;" (click)="addClient()" mat-fab color="basic"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <!-- Teams Tab -->
+    <div id="teams" class="tab-content active" *ngIf="tab === 'teams'">
+      <h2>Teams</h2>
+      <table id="teams-table">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Members</th>
+          <th>Proficiency</th>
+          <th *ngFor="let column of additionalColumns">
+            {{ column }}
+            <button mat-icon-button color="basic" (click)="removeColumn(column)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </th>
+          <th><button mat-icon-button color="basic" (click)="addColumn()" *ngIf="authenticated">
+            <mat-icon>add_box</mat-icon>
+          </button></th>
+        </tr>
+        <tr *ngFor="let team of data">
+          <td>{{ team.id }}</td>
+          <td>{{ team.name }}</td>
+          <td>{{ team.members }}</td>
+          <td>{{ team.level }}</td>
+          <td *ngFor="let value of additionalColumns">{{ team.additionalColumns[value] }}</td>
+          <td>
+            <button mat-icon-button color="basic" (click)="editTeam(team)" *ngIf="authenticated">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="removeEntity(team.id)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end;" *ngIf="authenticated">
+        <button style="margin: 15px;" (click)="addTeam()" mat-fab color="basic"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <!-- Suppliers Tab -->
+    <div id="suppliers" class="tab-content active" *ngIf="tab === 'suppliers'">
+      <h2>Suppliers</h2>
+      <table id="suppliers-table">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th *ngFor="let column of additionalColumns">
+            {{ column }}
+            <button mat-icon-button color="basic" (click)="removeColumn(column)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </th>
+          <th><button mat-icon-button color="basic" (click)="addColumn()" *ngIf="authenticated">
+            <mat-icon>add_box</mat-icon>
+          </button></th>
+        </tr>
+        <tr *ngFor="let supplier of data">
+          <td>{{ supplier.id }}</td>
+          <td>{{ supplier.name }}</td>
+          <td *ngFor="let value of additionalColumns">{{ supplier.additionalColumns[value] }}</td>
+          <td>
+            <button mat-icon-button color="basic" (click)="editSupplier(supplier)" *ngIf="authenticated">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="removeEntity(supplier.id)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end;" *ngIf="authenticated">
+        <button style="margin: 15px;" (click)="addSupplier()" mat-fab color="basic"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <!-- Materials Tab -->
+    <div id="materials" class="tab-content active" *ngIf="tab === 'materials'">
+      <h2>Materials</h2>
+      <table id="materials-table">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Quantity</th>
+          <th>Unit</th>
+          <th>Supplier</th>
+          <th *ngFor="let column of additionalColumns">
+            {{ column }}
+            <button mat-icon-button color="basic" (click)="removeColumn(column)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </th>
+          <th><button mat-icon-button color="basic" (click)="addColumn()" *ngIf="authenticated">
+            <mat-icon>add_box</mat-icon>
+          </button></th>
+        </tr>
+        <tr *ngFor="let material of data">
+          <td>{{ material.id }}</td>
+          <td>{{ material.name }}</td>
+          <td>{{ material.quantity }}</td>
+          <td>{{ material.unit }}</td>
+          <td>{{ material.supplier.name }}</td>
+          <td *ngFor="let value of additionalColumns">{{ material.additionalColumns[value] }}</td>
+          <td>
+            <button mat-icon-button color="basic" (click)="editMaterial(material)" *ngIf="authenticated">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="removeEntity(material.id)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end;" *ngIf="authenticated">
+        <button style="margin: 15px;" (click)="addMaterial()" mat-fab color="basic"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+
+    <!-- Techs Tab -->
+    <div id="techs" class="tab-content active" *ngIf="tab === 'techs'">
+      <h2>Techs</h2>
+      <table id="techs-table">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Supplier</th>
+          <th *ngFor="let column of additionalColumns">
+            {{ column }}
+            <button mat-icon-button color="basic" (click)="removeColumn(column)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </th>
+          <th><button mat-icon-button color="basic" (click)="addColumn()" *ngIf="authenticated">
+            <mat-icon>add_box</mat-icon>
+          </button></th>
+        </tr>
+        <tr *ngFor="let tech of data">
+          <td>{{ tech.id }}</td>
+          <td>{{ tech.name }}</td>
+          <td>{{ tech.supplier.name }}</td>
+          <td *ngFor="let value of additionalColumns">{{ tech.additionalColumns[value] }}</td>
+          <td>
+            <button mat-icon-button color="basic" (click)="editTech(tech)" *ngIf="authenticated">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button mat-icon-button color="basic" (click)="removeEntity(tech.id)" *ngIf="authenticated">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </tr>
+      </table>
+
+      <div style="width: 100%; display: flex; justify-content: flex-end;" *ngIf="authenticated">
+        <button style="margin: 15px;" (click)="addTech()" mat-fab color="basic"><mat-icon>add</mat-icon></button>
+      </div>
+    </div>
+  </div>
+</div>
