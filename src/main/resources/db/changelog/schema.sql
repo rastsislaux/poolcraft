@@ -169,7 +169,7 @@ VALUES
     (9, 5, 'Propylene', 1200,  '2024-08-22', '2024-09-15'),
     (10, 6, 'Concrete', 6000,  '2024-09-20', '2024-10-20'),
     (11, 6, 'Composite', 3500, '2024-10-11', '2024-11-25'),
-    (12, 7, 'Propylene', 1300, '2024-12-07', '2024-12-30');
+    (12, 7, 'Propylene', 1300, '2024-04-01', '2024-05-30');
 
 
 INSERT INTO material_for_project (material_id, project_id, quantity)

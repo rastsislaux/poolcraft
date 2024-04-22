@@ -14,4 +14,13 @@ public class ProjectRepository extends BaseRepository<Project, Long> {
         super("project", List.of("id", "client_id", "team_id", "type", "price", "start_date", "date"), jpaRepository, jdbcTemplate);
     }
 
+    public List<Project> findAllByClientId(Long clientId) {
+        return ((InternalProjectRepository) jpaRepository).findAllByClientId(clientId).stream()
+                .map(it -> {
+                    populateAdditonalColumns(it);
+                    return it;
+                })
+                .toList();
+    }
+
 }

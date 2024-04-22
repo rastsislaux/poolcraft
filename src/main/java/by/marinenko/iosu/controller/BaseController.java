@@ -16,6 +16,11 @@ public class BaseController<REPOSITORY extends BaseRepository<ENTITY, ID>, ENTIT
 
     protected final REPOSITORY repository;
 
+    @GetMapping("/{id}")
+    public ENTITY findById(@PathVariable ID id) {
+        return repository.findById(id);
+    }
+
     @GetMapping
     public List<ENTITY> getAll() {
         return repository.findAll();

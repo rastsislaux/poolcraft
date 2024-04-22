@@ -2,8 +2,11 @@ package by.marinenko.iosu.controller;
 
 import by.marinenko.iosu.model.Project;
 import by.marinenko.iosu.repository.ProjectRepository;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
@@ -15,6 +18,11 @@ public class ProjectController extends BaseController<ProjectRepository, Project
 
     public ProjectController(ProjectRepository repository) {
         super(repository);
+    }
+
+    @GetMapping("/client")
+    public List<Project> getClientProjects(@RequestParam Long clientId) {
+        return repository.findAllByClientId(clientId);
     }
 
     @Override

@@ -76,7 +76,7 @@ public abstract class BaseRepository<ENTITY extends ExtensibleEntity, ID> {
         jdbcTemplate.execute(sql);
     }
 
-    private void populateAdditonalColumns(ENTITY it) {
+    protected void populateAdditonalColumns(ENTITY it) {
         final var additionalColumnNames = String.join(", ", getAdditionalColumns());
         var additionalColumns = jdbcTemplate
                 .queryForList("SELECT " + additionalColumnNames + " FROM " + tableName + " WHERE id = " + it.getId())

@@ -1,0 +1,41 @@
+<div class="page-container">
+  <div class="tab-container">
+
+    <div class="tab-links">
+      <a href="/main?user={{ route.snapshot.queryParams['user'] }}&auth={{ route.snapshot.queryParams['auth'] }}">
+      <img class="logo" src="assets/logo.png" alt="PoolCraft Logo">
+      </a>
+      <button mat-flat-button color="basic" *ngIf="authenticated">{{ username }} | Full Access</button>
+      <button mat-flat-button color="basic" *ngIf="!authenticated">{{ username }} | Limited Access</button>
+    </div>
+
+    <div class="tab-content">
+      <h1>{{ client.name }}</h1>
+      {{ client.id }} | {{ client.email }} | {{ client.phone }}
+    </div>
+
+    <table id="projects-table">
+      <tr>
+        <th>ID</th>
+        <th>Type</th>
+        <th>Client</th>
+        <th>Team</th>
+        <th>Price</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th *ngFor="let column of additionalColumns">{{ column }}</th>
+      </tr>
+      <tr *ngFor="let project of projects">
+        <td>{{ project.id }}</td>
+        <td>{{ project.type }}</td>
+        <td>{{ project.client.name }}</td>
+        <td>{{ project.team.name }}</td>
+        <td>{{ project.price }}</td>
+        <td>{{ project.startDate }}</td>
+        <td>{{ project.date }}</td>
+        <td *ngFor="let value of additionalColumns">{{ project.additionalColumns[value] }}</td>
+      </tr>
+    </table>
+
+  </div>
+</div>

@@ -5,13 +5,15 @@ import {Api} from "../apiservice.service";
 import {ModalService} from "../modal.service";
 import {MatButton, MatFabButton, MatIconButton, MatMiniFabButton} from "@angular/material/button";
 import {MatIcon} from "@angular/material/icon";
-import {Chart} from "chart.js";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {MatAccordion, MatExpansionPanel, MatExpansionPanelTitle, MatExpansionPanelHeader, MatExpansionPanelDescription} from "@angular/material/expansion";
+import {FormsModule} from "@angular/forms";
+import {MatInput} from "@angular/material/input";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatButton, MatIcon, MatMiniFabButton, MatIconButton, MatFabButton],
+  imports: [CommonModule, RouterOutlet, MatButton, MatIcon, MatMiniFabButton, MatIconButton, MatFabButton, MatAccordion, MatExpansionPanel, MatExpansionPanelTitle, MatExpansionPanelHeader, MatExpansionPanelDescription, FormsModule, MatInput],
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
@@ -30,12 +32,27 @@ export class MainComponent implements OnInit {
   authenticated: boolean = true;
   username: string;
 
+  techsAndMaterials: any;
+  materialsByProject: any;
+
+  readiness: number = 50;
+  readinessData: any;
+
+  currentProjects: any;
+
+  deadlines: any;
+
   constructor(private api: Api, private modalService: ModalService, private route: ActivatedRoute, private router: Router,
               private snackBar: MatSnackBar) {
     api.projectService().findAll().then(data => this.data = data);
     api.projectService().getAdditionalColumns().then(data => this.additionalColumns = data);
     this.authenticated = this.isAuth();
     this.username = route.snapshot.queryParams["user"];
+    api.miscService().findTechAndMaterials().then(data => this.techsAndMaterials = data);
+    api.miscService().findMaterialsByProject().then(data => this.materialsByProject = data);
+    this.updateReadiness();
+    api.miscService().findDeadlines().then(data => this.deadlines = data);
+    api.miscService().findCurrentProjects().then(data => this.currentProjects = data);
   }
 
   ngOnInit() {
@@ -47,6 +64,11 @@ export class MainComponent implements OnInit {
   isAuth() {
     const auth = this.route.snapshot.queryParams["auth"]
     return auth === this.creds;
+  }
+
+  async openTabNoService(tab: string) {
+    this.tab = tab;
+    this.activeService = null;
   }
 
   async openTab(tab: string, service: any) {
@@ -81,6 +103,10 @@ export class MainComponent implements OnInit {
 
   openTechsTab() {
     this.openTab("techs", this.api.techService());
+  }
+
+  openOtherTab() {
+    this.openTabNoService("other");
   }
 
   openCurrentTab() {
@@ -692,7 +718,6 @@ export class MainComponent implements OnInit {
         .then(() => this.openCurrentTab());
     });
   }
-
   async editTeam(team: any) {
     const fields = [
       {name: 'name', type: 'text', value: team.name, 'placeholder': 'Enter team name...'},
@@ -721,7 +746,6 @@ export class MainComponent implements OnInit {
         .then(() => this.openCurrentTab());
     });
   }
-
   async editSupplier(supplier: any) {
     const fields = [
       {name: 'name', type: 'text', value: supplier.name, 'placeholder': 'Enter supplier name...'},
@@ -891,5 +915,16 @@ export class MainComponent implements OnInit {
   send(client: any) {
     window.open("mailto:" + client.email, );
   }
+  updateReadiness() {
+    this.api.miscService().findReadiness(this.readiness).then(data => this.readinessData = data);
+  }
+  protected readonly Math = Math;
 
+  viewProjects(client: any) {
+    this.router.navigate(["client"], { queryParams: {
+      clientId: client.id,
+      user: this.route.snapshot.queryParams["user"],
+      auth: this.route.snapshot.queryParams["auth"],
+    } })
+  }
 }

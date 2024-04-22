@@ -8,6 +8,16 @@ class APIService {
     this._baseUrl = apiBaseUrl + "/" + serviceName
   }
 
+  async findById(id: number) {
+    const response = await fetch(this._baseUrl + "/" + id);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
   async findAll() {
     const response = await fetch(this._baseUrl);
 
@@ -108,6 +118,16 @@ class ProjectsService extends APIService {
     super(apiBaseUrl, 'projects');
   }
 
+  async findForClient(id: number) {
+    const response = await fetch(this._baseUrl + "/client?clientId=" + id);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
   // Additional methods specific to the ProjectsService class can be added here
 }
 
@@ -130,6 +150,61 @@ class TeamsService extends APIService {
 class TechsService extends APIService {
   constructor(apiBaseUrl: string) {
     super(apiBaseUrl, 'techs');
+  }
+}
+
+class MiscService {
+
+  constructor(private _baseUrl: string) { }
+
+  async findTechAndMaterials() {
+    const response = await fetch(this._baseUrl + "/misc/techs-and-materials");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async findMaterialsByProject() {
+    const response = await fetch(this._baseUrl + "/misc/materials-by-project");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async findReadiness(readiness: number) {
+    const response = await fetch(this._baseUrl + "/misc/project-readiness?readiness=" + readiness);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async findDeadlines() {
+    const response = await fetch(this._baseUrl + "/misc/deadlines");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
+
+  async findCurrentProjects() {
+    const response = await fetch(this._baseUrl + "/misc/current-projects");
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
   }
 }
 
@@ -166,5 +241,9 @@ export class Api {
 
   techService() {
     return new TechsService(this._baseUrl);
+  }
+
+  miscService() {
+    return new MiscService(this._baseUrl);
   }
 }
