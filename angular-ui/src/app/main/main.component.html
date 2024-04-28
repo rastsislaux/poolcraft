@@ -312,22 +312,20 @@
 
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>Deadlines</mat-panel-title>
-            <mat-panel-description>Retrieve deadlines for all projects</mat-panel-description>
+            <mat-panel-title>Durations</mat-panel-title>
+            <mat-panel-description>Retrieve durations for all projects</mat-panel-description>
           </mat-expansion-panel-header>
 
           <table>
             <tr>
               <th>Project ID</th>
               <th>Client name</th>
-              <th>Start date</th>
-              <th>End date</th>
+              <th>Duration</th>
             </tr>
             <tr *ngFor="let d of deadlines">
               <td>{{ d.id }}</td>
               <td>{{ d.name }}</td>
-              <td>{{ d.startDate }}</td>
-              <td>{{ d.date }}</td>
+              <td>{{ d.duration }} days</td>
             </tr>
           </table>
         </mat-expansion-panel>
@@ -365,14 +363,12 @@
             <tr>
               <th>Project ID</th>
               <th>Client name</th>
-              <th>Material name</th>
-              <th>Quantity</th>
+              <th *ngFor="let mat of materials">{{ mat.name }}</th>
             </tr>
             <tr *ngFor="let m of materialsByProject">
-              <td>{{ m.id }}</td>
-              <td>{{ m.clientName }}</td>
-              <td>{{ m.materialName }}</td>
-              <td>{{ m.quantity }}</td>
+              <td>{{ m[0] }}</td>
+              <td>{{ m[1] }}</td>
+              <td *ngFor="let mat of materials">{{ m[2].includes(mat.id) ? "+" : "-" }}</td>
             </tr>
           </table>
         </mat-expansion-panel>

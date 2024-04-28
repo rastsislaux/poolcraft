@@ -2,7 +2,7 @@ package by.marinenko.iosu.repository;
 
 import by.marinenko.iosu.model.Project;
 import by.marinenko.iosu.projection.CurrentProject;
-import by.marinenko.iosu.projection.Deadlines;
+import by.marinenko.iosu.projection.IDuration;
 import by.marinenko.iosu.projection.ProjectReadiness;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,12 +27,12 @@ interface InternalProjectRepository extends JpaRepository<Project, Long> {
     List<ProjectReadiness> findProjectReadiness(Double readiness);
 
     @Query(value = """
-    SELECT p.id, c.name, p.start_date as startDate, p.date
+    SELECT p.id, c.name, (p.date - p.start_date) as duration
     FROM project p
     JOIN public.client c on c.id = p.client_id
     ORDER BY p.start_date;
     """, nativeQuery = true)
-    List<Deadlines> findDeadlines();
+    List<IDuration> findDeadlines();
 
     @Query(value = """
     SELECT p.id, c.name, p.type, p.start_date as startDate, p.date
@@ -44,5 +44,15 @@ interface InternalProjectRepository extends JpaRepository<Project, Long> {
     List<CurrentProject> findCurrentProjects();
 
     List<Project> findAllByClientId(Long clientId);
+
+    @Query(value = """
+    select p.id, c.name, array_agg(m.id)
+    from project p
+    join public.client c on c.id = p.client_id
+    left join material_for_project mfp on p.id = mfp.project_id
+    left join material m on mfp.material_id = m.id
+    group by p.id, c.id;
+    """, nativeQuery = true)
+    List<Object> crossRequest();
 
 }

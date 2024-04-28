@@ -1,7 +1,7 @@
 package by.marinenko.iosu.repository;
 
 import by.marinenko.iosu.projection.CurrentProject;
-import by.marinenko.iosu.projection.Deadlines;
+import by.marinenko.iosu.projection.IDuration;
 import by.marinenko.iosu.projection.MaterialsByProject;
 import by.marinenko.iosu.projection.ProjectReadiness;
 import by.marinenko.iosu.projection.TechMaterialUnion;
@@ -30,11 +30,16 @@ public class MiscRepository {
         return internalProjectRepository.findProjectReadiness(readiness);
     }
 
-    public List<Deadlines> findDeadlines() {
+    public List<IDuration> findDeadlines() {
         return internalProjectRepository.findDeadlines();
     }
 
     public List<CurrentProject> findCurrentProjects() {
         return internalProjectRepository.findCurrentProjects();
     }
+
+    public List<Object> crossRequest() {
+        return internalProjectRepository.crossRequest();
+    }
+
 }

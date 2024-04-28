@@ -168,7 +168,7 @@ class MiscService {
   }
 
   async findMaterialsByProject() {
-    const response = await fetch(this._baseUrl + "/misc/materials-by-project");
+    const response = await fetch(this._baseUrl + "/misc/cross-request");
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

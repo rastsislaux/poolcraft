@@ -34,6 +34,7 @@ export class MainComponent implements OnInit {
 
   techsAndMaterials: any;
   materialsByProject: any;
+  materials: any;
 
   readiness: number = 50;
   readinessData: any;
@@ -53,6 +54,7 @@ export class MainComponent implements OnInit {
     this.updateReadiness();
     api.miscService().findDeadlines().then(data => this.deadlines = data);
     api.miscService().findCurrentProjects().then(data => this.currentProjects = data);
+    api.materialService().findAll().then(data => this.materials = data);
   }
 
   ngOnInit() {
