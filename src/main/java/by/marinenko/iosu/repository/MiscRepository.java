@@ -42,4 +42,8 @@ public class MiscRepository {
         return internalProjectRepository.crossRequest();
     }
 
+    public List<Object> crossRequest2() {
+        return internalProjectRepository.crossRequest2();
+    }
+
 }

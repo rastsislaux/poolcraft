@@ -46,7 +46,7 @@ interface InternalProjectRepository extends JpaRepository<Project, Long> {
     List<Project> findAllByClientId(Long clientId);
 
     @Query(value = """
-    select p.id, c.name, array_agg(m.id)
+    select p.id, c.name, array_agg(m.id), array_agg(mfp.quantity)
     from project p
     join public.client c on c.id = p.client_id
     left join material_for_project mfp on p.id = mfp.project_id
@@ -54,5 +54,15 @@ interface InternalProjectRepository extends JpaRepository<Project, Long> {
     group by p.id, c.id;
     """, nativeQuery = true)
     List<Object> crossRequest();
+
+    @Query(value = """
+    SELECT c.name AS clientName, array_agg(m.id) AS materialIds, array_agg(mfp.quantity) AS quantities
+    FROM client c
+             LEFT JOIN project p ON c.id = p.client_id
+             LEFT JOIN material_for_project mfp ON p.id = mfp.project_id
+             LEFT JOIN material m ON mfp.material_id = m.id
+    GROUP BY c.id;
+    """, nativeQuery = true)
+    List<Object> crossRequest2();
 
 }

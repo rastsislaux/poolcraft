@@ -34,6 +34,7 @@ export class MainComponent implements OnInit {
 
   techsAndMaterials: any;
   materialsByProject: any;
+  materialsByClient: any;
   materials: any;
 
   readiness: number = 50;
@@ -51,6 +52,7 @@ export class MainComponent implements OnInit {
     this.username = route.snapshot.queryParams["user"];
     api.miscService().findTechAndMaterials().then(data => this.techsAndMaterials = data);
     api.miscService().findMaterialsByProject().then(data => this.materialsByProject = data);
+    api.miscService().findMaterialsByClient().then(data => this.materialsByClient = data);
     this.updateReadiness();
     api.miscService().findDeadlines().then(data => this.deadlines = data);
     api.miscService().findCurrentProjects().then(data => this.currentProjects = data);

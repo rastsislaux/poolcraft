@@ -206,6 +206,16 @@ class MiscService {
 
     return await response.json();
   }
+
+  async findMaterialsByClient() {
+    const response = await fetch(this._baseUrl + "/misc/cross-request-2")
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    return await response.json();
+  }
 }
 
 @Injectable({

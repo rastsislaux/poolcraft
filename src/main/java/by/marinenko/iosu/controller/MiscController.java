@@ -53,4 +53,9 @@ public class MiscController {
         return miscRepository.crossRequest();
     }
 
+    @GetMapping("/cross-request-2")
+    public List<Object> crossRequest2() {
+        return miscRepository.crossRequest2();
+    }
+
 }

@@ -355,6 +355,24 @@
 
         <mat-expansion-panel>
           <mat-expansion-panel-header>
+            <mat-panel-title>Materials by client</mat-panel-title>
+            <mat-panel-description>Retrieve a list of materials by client</mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <table>
+            <tr>
+              <th>Client name</th>
+              <th *ngFor="let mat of materials">{{ mat.name }}</th>
+            </tr>
+            <tr *ngFor="let m of materialsByClient">
+              <td>{{ m[0] }}</td>
+              <td *ngFor="let mat of materials">{{ m[1].includes(mat.id) ? m[2][m[1].indexOf(mat.id)] : "-" }}</td>
+            </tr>
+          </table>
+        </mat-expansion-panel>
+
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
             <mat-panel-title>Materials by project</mat-panel-title>
             <mat-panel-description>Retrieve a list of materials by project</mat-panel-description>
           </mat-expansion-panel-header>
@@ -368,7 +386,7 @@
             <tr *ngFor="let m of materialsByProject">
               <td>{{ m[0] }}</td>
               <td>{{ m[1] }}</td>
-              <td *ngFor="let mat of materials">{{ m[2].includes(mat.id) ? "+" : "-" }}</td>
+              <td *ngFor="let mat of materials">{{ m[2].includes(mat.id) ? m[3][m[2].indexOf(mat.id)] : "-" }}</td>
             </tr>
           </table>
         </mat-expansion-panel>
